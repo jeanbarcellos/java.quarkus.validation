@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jeanbarcellos.core.dto.ValidationRequestBase;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +24,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PeopleRequest {
+public class PeopleRequest extends ValidationRequestBase {
 
     public static final String MSG_ERROR_NAME_NOT_NULL_OR_EMPTY = "O campo 'name' não deve ser nulo ou estar vazio";
     public static final String MSG_ERROR_NAME_SIZE = "O campo 'name' deve possuir tamanho deve ser entre 4 e 128";
