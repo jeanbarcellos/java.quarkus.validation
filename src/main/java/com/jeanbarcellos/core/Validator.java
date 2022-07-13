@@ -11,8 +11,6 @@ import com.jeanbarcellos.core.exception.ValidationException;
 
 public class Validator {
 
-    public static final String MSG_ERROR_VALIDATION = "Erro de validação ......";
-
     private Validator() {
 
     }
@@ -29,7 +27,7 @@ public class Validator {
 
         if (!validateResult.isEmpty()) {
             throw new ValidationException(
-                    MSG_ERROR_VALIDATION,
+                    Constants.MSG_ERROR_VALIDATION,
                     validateResult.stream().map(ConstraintViolation::getMessage).collect(Collectors.toList()));
         }
     }
