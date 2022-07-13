@@ -3,9 +3,8 @@ package com.jeanbarcellos.core;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.enterprise.inject.spi.CDI;
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.ValidatorFactory;
 
 import com.jeanbarcellos.core.exception.ValidationException;
 
@@ -15,11 +14,17 @@ public class Validator {
 
     }
 
-    public static <TModel> Set<ConstraintViolation<TModel>> validate(TModel model) {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        javax.validation.Validator validator = factory.getValidator();
+    private static javax.validation.Validator getHibernateValidator() {
+        // Obter Valiudator default
+        // ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        // return factory.getValidator();
 
-        return validator.validate(model);
+        // Obtem o validator com injeção de dependencia
+        return CDI.current().select(javax.validation.Validator.class).get();
+    }
+
+    public static <TModel> Set<ConstraintViolation<TModel>> validate(TModel model) {
+        return getHibernateValidator().validate(model);
     }
 
     public static <TModel> void validateWithThrowException(TModel model) {
