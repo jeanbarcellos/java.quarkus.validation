@@ -16,7 +16,7 @@ public class ValidationExceptionHandler implements ExceptionMapper<ValidationExc
 
     @Override
     public Response toResponse(ValidationException exception) {
-        log.error(exception.getMessage(), exception);
+        // log.error(exception.getMessage(), exception);
 
         var response = exception.hasErrors()
                 ? new ErrorListResponse(Response.Status.BAD_REQUEST.getStatusCode(), exception.getMessage(), exception.getErrors())
