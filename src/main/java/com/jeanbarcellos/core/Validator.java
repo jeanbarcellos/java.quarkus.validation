@@ -14,17 +14,8 @@ public class Validator {
 
     }
 
-    private static javax.validation.Validator getHibernateValidator() {
-        // Obter Valiudator default
-        // ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        // return factory.getValidator();
-
-        // Obtem o validator com injeção de dependencia
-        return CDI.current().select(javax.validation.Validator.class).get();
-    }
-
     public static <TModel> Set<ConstraintViolation<TModel>> validate(TModel model) {
-        return getHibernateValidator().validate(model);
+        return getInstanceHibernateValidator().validate(model);
     }
 
     public static <TModel> void validateWithThrowException(TModel model) {
@@ -35,6 +26,20 @@ public class Validator {
                     Constants.MSG_ERROR_VALIDATION,
                     validateResult.stream().map(ConstraintViolation::getMessage).collect(Collectors.toList()));
         }
+    }
+
+    private static javax.validation.Validator getInstanceHibernateValidator() {
+        // ValidatorFactory validatorFactory =
+        // Validation.byProvider(HibernateValidator.class)
+        // .configure()
+        // .buildValidatorFactory();
+        // return validatorFactory.getValidator();
+
+        // Obter Valiudator default
+        // ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        // return factory.getValidator();
+
+        return CDI.current().select(javax.validation.Validator.class).get();
     }
 
 }
