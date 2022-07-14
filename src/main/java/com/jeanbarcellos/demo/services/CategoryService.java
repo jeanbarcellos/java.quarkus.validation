@@ -23,7 +23,12 @@ public class CategoryService {
     public CategoryResponse insert(CategoryRequest request) {
         request.validate();
 
-        return new CategoryResponse();
+        return CategoryResponse
+                .builder()
+                .id(UUID.randomUUID())
+                .name(request.getName())
+                .description(request.getDescription())
+                .build();
     }
 
     public boolean exists(UUID id) {
