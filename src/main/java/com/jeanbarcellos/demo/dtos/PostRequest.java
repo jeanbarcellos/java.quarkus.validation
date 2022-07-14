@@ -27,7 +27,7 @@ import lombok.experimental.Accessors;
 public class PostRequest extends ValidationRequestBase {
 
     public static final String MSG_ERROR_TITLE_NOT_NULL_OR_EMPTY = "O campo 'title' não deve ser nulo ou estar vazio";
-    public static final String MSG_ERROR_TITLE_SIZE = "O campo 'text' deve possuir tamanho deve ser entre 4 e 128";
+    public static final String MSG_ERROR_TITLE_SIZE = "O campo 'text' deve possuir tamanho entre 4 e 128";
 
     public static final String MSG_ERROR_TITLE_CATEGORY_ID_INVALID = "O campo 'categoryId' possui valor inválido";
 

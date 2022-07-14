@@ -27,7 +27,7 @@ import lombok.experimental.Accessors;
 public class PeopleRequest extends ValidationRequestBase {
 
     public static final String MSG_ERROR_NAME_NOT_NULL_OR_EMPTY = "O campo 'name' não deve ser nulo ou estar vazio";
-    public static final String MSG_ERROR_NAME_SIZE = "O campo 'name' deve possuir tamanho deve ser entre 4 e 128";
+    public static final String MSG_ERROR_NAME_SIZE = "O campo 'name' deve possuir tamanho entre 4 e 128";
 
     public static final String MSG_ERROR_EMAIL_NOT_NULL_OR_EMPTY = "O campo 'email' não deve ser nulo ou estar vazio";
     public static final String MSG_ERROR_EMAIL_INVALID = "O 'email' informado é inválido";
