@@ -26,8 +26,4 @@ public class CategoryValidator implements ConstraintValidator<CategoryCheck, UUI
         return this.service.exists(value);
     }
 
-    public boolean isValid(UUID value) {
-        return this.service.exists(value);
-    }
-
 }
