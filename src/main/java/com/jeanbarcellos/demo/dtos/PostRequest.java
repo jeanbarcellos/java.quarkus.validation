@@ -8,6 +8,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jeanbarcellos.core.dto.ValidationRequestBase;
+import com.jeanbarcellos.demo.validation.CategoryCheck;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,10 +24,12 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostRequest {
+public class PostRequest extends ValidationRequestBase {
 
     public static final String MSG_ERROR_TITLE_NOT_NULL_OR_EMPTY = "O campo 'title' não deve ser nulo ou estar vazio";
     public static final String MSG_ERROR_TITLE_SIZE = "O campo 'text' deve possuir tamanho deve ser entre 4 e 128";
+
+    public static final String MSG_ERROR_TITLE_CATEGORY_ID_INVALID = "O campo 'categoryId' possui valor inválido";
 
     public static final String MSG_ERROR_TEXT_NOT_NULL_OR_EMPTY = "O campo 'text' não deve ser nulo ou estar vazio";
 
@@ -33,6 +37,9 @@ public class PostRequest {
 
     @JsonIgnore
     private UUID id;
+
+    @CategoryCheck(message = MSG_ERROR_TITLE_CATEGORY_ID_INVALID)
+    private UUID categoryId;
 
     @NotEmpty(message = MSG_ERROR_TITLE_NOT_NULL_OR_EMPTY)
     @Size(min = 4, max = 128, message = MSG_ERROR_TITLE_SIZE)
