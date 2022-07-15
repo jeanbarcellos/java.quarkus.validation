@@ -7,9 +7,10 @@ import com.jeanbarcellos.demo.dtos.PostRequest;
 @ApplicationScoped
 public class PostService {
 
-    public void insert(PostRequest request) {
+    public boolean insert(PostRequest request) {
         request.validate();
 
+        return true;
     }
 
 }
