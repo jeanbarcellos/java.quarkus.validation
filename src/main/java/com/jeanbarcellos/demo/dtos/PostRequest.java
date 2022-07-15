@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jeanbarcellos.core.dto.ValidationRequestBase;
-import com.jeanbarcellos.demo.validation.CategoryCheck;
+import com.jeanbarcellos.demo.validation.annotation.CategoryCheck;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

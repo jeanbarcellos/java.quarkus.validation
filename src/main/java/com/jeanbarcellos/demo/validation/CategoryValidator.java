@@ -8,6 +8,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import com.jeanbarcellos.demo.services.CategoryService;
+import com.jeanbarcellos.demo.validation.annotation.CategoryCheck;
 
 /**
  * Validador de Category

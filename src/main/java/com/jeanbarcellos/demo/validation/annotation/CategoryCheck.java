@@ -1,4 +1,4 @@
-package com.jeanbarcellos.demo.validation;
+package com.jeanbarcellos.demo.validation.annotation;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.CONSTRUCTOR;
@@ -16,7 +16,8 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.jeanbarcellos.demo.validation.CategoryCheck.List;
+import com.jeanbarcellos.demo.validation.CategoryValidator;
+import com.jeanbarcellos.demo.validation.annotation.CategoryCheck.List;
 
 /**
  * Annotation para verificar se o ID de {@code com.jeanbarcellos.demo.domain.Category} é válido.
@@ -37,7 +38,7 @@ import com.jeanbarcellos.demo.validation.CategoryCheck.List;
 @Documented
 public @interface CategoryCheck {
 
-    String message() default "{com.jeanbarcellos.demo.validation.CategoryCheck.message}";
+    String message() default "{com.jeanbarcellos.demo.validation.annotation.CategoryCheck.message}";
 
     Class<?>[] groups() default {};
 
