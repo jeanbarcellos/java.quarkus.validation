@@ -15,6 +15,32 @@ import io.quarkus.test.junit.QuarkusTest;
 class DocUtilsTest {
 
     @Test
+    void isCPF_inputNull_returnFalse() {
+
+        // Arrange
+        String numero = null;
+
+        // Act
+        var result = DocUtils.isCPF(numero);
+
+        // Assert
+        assertFalse(result);
+    }
+
+    @Test
+    void isCPF_inputEmptyString_returnFalse() {
+
+        // Arrange
+        String numero = "";
+
+        // Act
+        var result = DocUtils.isCPF(numero);
+
+        // Assert
+        assertFalse(result);
+    }
+
+    @Test
     void isCPF_entryCpfInvalid_shouldReturnFalse() {
 
         // Arrange
@@ -105,7 +131,33 @@ class DocUtilsTest {
         assertEquals(cpfFormated, result);
     }
 
-    // ****
+    /* ****************************************************************** */
+
+    @Test
+    void isCNPJ_inputNull_returnFalse() {
+
+        // Arrange
+        String numero = null;
+
+        // Act
+        var result = DocUtils.isCNPJ(numero);
+
+        // Assert
+        assertFalse(result);
+    }
+
+    @Test
+    void isCNPJ_inputEmptyString_returnFalse() {
+
+        // Arrange
+        String numero = "";
+
+        // Act
+        var result = DocUtils.isCNPJ(numero);
+
+        // Assert
+        assertFalse(result);
+    }
 
     @Test
     void isCNPJ_entryCnpjInvalid_shouldReturnFalse() {
@@ -199,15 +251,43 @@ class DocUtilsTest {
         assertEquals(cnpjFormated, result);
     }
 
+    /* ****************************************************************** */
+
+    @Test
+    void isCPForCNPJ_inputNull_returnFalse() {
+
+        // Arrange
+        String numero = null;
+
+        // Act
+        var result = DocUtils.isCPForCNPJ(numero);
+
+        // Assert
+        assertFalse(result);
+    }
+
+    @Test
+    void isCPForCNPJ_inputEmptyString_returnFalse() {
+
+        // Arrange
+        String numero = "";
+
+        // Act
+        var result = DocUtils.isCPForCNPJ(numero);
+
+        // Assert
+        assertFalse(result);
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {
             "49118537006", "57565900052", "01531188060", "96035245498",
-            "02804097000110", "46313752000103", "46552618000165", "06559405000140"
+            "02804097000110", "46313752000103", "46552618000165", "06559405000140",
     })
-    void isCPForCNPJ_inputStringValids_returnTrue(String numeros) {
+    void isCPForCNPJ_inputStringValids_returnTrue(String numero) {
 
         // Arrange && Act
-        var result = DocUtils.isCPForCNPJ(numeros);
+        var result = DocUtils.isCPForCNPJ(numero);
 
         // Assert
         assertTrue(result);
@@ -218,12 +298,39 @@ class DocUtilsTest {
             "77777777", "88888888888", "99999999999", "1234567891", "ASDASDASDAS", "123ASD123AS",
             "66666666666666", "77777777777777", "88888888888888", "99999999999999", "1234567890134", "ASDASDASDASASD"
     })
-    void isCPForCNPJ_inputStringinvalids_returnFalse(String numeros) {
+    void isCPForCNPJ_inputStringInvalids_returnFalse(String numero) {
 
         // Arrange && Act
-        var result = DocUtils.isCPForCNPJ(numeros);
+        var result = DocUtils.isCPForCNPJ(numero);
 
         // Assert
         assertFalse(result);
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = {
+            77777777L, 88888888888L, 99999999999L, 1234567891,
+            66666666666666L, 77777777777777L, 88888888888888L, 99999999999999L, 1234567890134L
+    })
+    void isCPForCNPJ_inputLongInvalids_returnFalse(Long numero) {
+
+        // Arrange && Act
+        var result = DocUtils.isCPForCNPJ(numero);
+
+        // Assert
+        assertFalse(result);
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = {
+            1531188060L, 191L, 2804097000110L
+    })
+    void isCPForCNPJ_inputLongValids_returnFalse(Long numero) {
+
+        // Arrange && Act
+        var result = DocUtils.isCPForCNPJ(numero);
+
+        // Assert
+        assertTrue(result);
     }
 }

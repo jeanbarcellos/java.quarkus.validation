@@ -11,13 +11,15 @@ import java.util.Random;
  */
 public class DocUtils {
 
+    private static final String ZERO = "0";
+
     private static final Integer CPF_LENGHT = 11;
-    public static final String CPF_REGEX = "(\\d{3})(\\d{3})(\\d{3})(\\d{2})";
-    public static final String CPF_REPLACEMENT = "$1.$2.$3-$4";
+    private static final String CPF_REGEX = "(\\d{3})(\\d{3})(\\d{3})(\\d{2})";
+    private static final String CPF_REPLACEMENT = "$1.$2.$3-$4";
 
     private static final Integer CNPJ_LENGHT = 14;
-    public static final String CNPJ_REGEX = "(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})";
-    public static final String CNPJ_REPLACEMENT = "$1.$2.$3/$4-$5";
+    private static final String CNPJ_REGEX = "(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})";
+    private static final String CNPJ_REPLACEMENT = "$1.$2.$3/$4-$5";
 
     private DocUtils() {
 
@@ -58,6 +60,8 @@ public class DocUtils {
     }
 
     public static boolean isCPF(String cpf) {
+        if (StringUtils.isNullOrEmpty(cpf))
+            return false;
 
         cpf = StringUtils.onlyNumbers(cpf);
 
@@ -116,7 +120,7 @@ public class DocUtils {
     }
 
     public static String formatCPF(String cpf) {
-        cpf = StringUtils.leftPad(cpf, CPF_LENGHT, "0");
+        cpf = StringUtils.leftPad(cpf, CPF_LENGHT, ZERO);
         return StringUtils.replaceAll(CPF_REGEX, CPF_REPLACEMENT, cpf);
     }
 
@@ -162,6 +166,9 @@ public class DocUtils {
     }
 
     public static boolean isCNPJ(String cnpj) {
+        if (StringUtils.isNullOrEmpty(cnpj))
+            return false;
+
         cnpj = StringUtils.onlyNumbers(cnpj);
 
         var numerosInvalidos = Arrays.asList("00000000000000", "11111111111111", "22222222222222", "33333333333333",
@@ -170,7 +177,7 @@ public class DocUtils {
 
         // considera-se erro cnpj's formados por uma sequencia de numeros iguais
         if (numerosInvalidos.contains(cnpj) || (cnpj.length() != CNPJ_LENGHT))
-            return (false);
+            return false;
 
         char dig13, dig14;
         int sm, i, r, num, peso;
@@ -225,24 +232,25 @@ public class DocUtils {
     }
 
     public static String formatCNPJ(String cnpj) {
-        cnpj = StringUtils.leftPad(cnpj, CNPJ_LENGHT, "0");
+        cnpj = StringUtils.leftPad(cnpj, CNPJ_LENGHT, ZERO);
         return cnpj.replaceAll(CNPJ_REGEX, CNPJ_REPLACEMENT);
     }
 
     /* ****************************************************************** */
 
     public static boolean isCPForCNPJ(String number) {
+        if (StringUtils.isNullOrEmpty(number)) {
+            return false;
+        }
+
         number = StringUtils.onlyNumbers(number);
 
-        if (number.length() == CPF_LENGHT) {
-            return isCPF(number);
-        }
+        return isCPF(StringUtils.leftPad(number, CPF_LENGHT, ZERO))
+                || isCNPJ(StringUtils.leftPad(number, CNPJ_LENGHT, ZERO));
+    }
 
-        if (number.length() == CNPJ_LENGHT) {
-            return isCNPJ(number);
-        }
-
-        return false;
+    public static boolean isCPForCNPJ(Long number) {
+        return isCPForCNPJ(number.toString());
     }
 
     /* ****************************************************************** */
