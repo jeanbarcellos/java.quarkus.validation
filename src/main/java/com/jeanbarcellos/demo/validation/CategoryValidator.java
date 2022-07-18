@@ -3,7 +3,6 @@ package com.jeanbarcellos.demo.validation;
 import java.util.UUID;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -19,8 +18,11 @@ import com.jeanbarcellos.demo.validation.annotation.CategoryCheck;
 @ApplicationScoped
 public class CategoryValidator implements ConstraintValidator<CategoryCheck, UUID> {
 
-    @Inject
     private CategoryService service;
+
+    public CategoryValidator(CategoryService service) {
+        this.service = service;
+    }
 
     @Override
     public boolean isValid(UUID value, ConstraintValidatorContext context) {

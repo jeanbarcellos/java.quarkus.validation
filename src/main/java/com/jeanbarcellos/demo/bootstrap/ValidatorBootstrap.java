@@ -6,6 +6,9 @@ import javax.validation.Validator;
 import io.quarkus.runtime.Startup;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Starter para o Validator funcionar estaticamente
+ */
 @Slf4j
 @Startup
 @ApplicationScoped
