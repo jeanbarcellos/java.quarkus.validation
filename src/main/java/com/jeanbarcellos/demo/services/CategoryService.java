@@ -32,6 +32,6 @@ public class CategoryService {
     }
 
     public boolean exists(UUID id) {
-        return this.repository.count("id", id) > 0;
+        return this.repository.existsById(id);
     }
 }

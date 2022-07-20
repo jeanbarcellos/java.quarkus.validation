@@ -1,6 +1,5 @@
 package com.jeanbarcellos.demo.resources;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 import javax.enterprise.context.RequestScoped;
@@ -18,6 +17,7 @@ import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import com.jeanbarcellos.demo.dtos.CategoryRequest;
+import com.jeanbarcellos.demo.dtos.ExistsResponse;
 import com.jeanbarcellos.demo.services.CategoryService;
 
 @Path("/categories")
@@ -38,11 +38,7 @@ public class CategoryResource {
     @GET
     @Path("{id}")
     public Response exists(@PathParam("id") UUID id) {
-
-        var response = new HashMap<String, Object>();
-        response.put("exists", this.service.exists(id));
-
-        return Response.ok(response).build();
+        return Response.ok(ExistsResponse.of(this.service.exists(id))).build();
     }
 
     @POST
