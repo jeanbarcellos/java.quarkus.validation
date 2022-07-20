@@ -11,6 +11,9 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.jeanbarcellos.demo.dtos.TypeResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @ApplicationScoped
 public class TypeService {
 
@@ -31,19 +34,28 @@ public class TypeService {
 
     }
 
+    @SuppressWarnings("unchecked")
     public boolean checkBy(Types type, Integer id) {
+        log.info(String.format("Instânicia: %s", this));
+        log.info(String.format("Verificando a existencia do método '%s' e id '%s'", type, id));
 
-        String methodName = type.getValue();
+        try {
+            String methodName = type.getValue();
 
-        List<TypeResponse> list = invokeMethod(this, methodName);
+            List<TypeResponse> list = (List<TypeResponse>) MethodUtils.invokeMethod(this, methodName);
 
-        Optional<TypeResponse> result = list
-                .stream()
-                .parallel()
-                .filter(t -> t.getId().equals(id))
-                .findAny();
+            Optional<TypeResponse> result = list
+                    .stream()
+                    .parallel()
+                    .filter(t -> t.getId().equals(id))
+                    .findAny();
 
-        return result.isPresent();
+            return result.isPresent();
+        } catch (Exception e) {
+            log.error("Méthodo inexistente", e);
+        }
+
+        return false;
     }
 
     public List<TypeResponse> visibility() {
@@ -59,15 +71,4 @@ public class TypeService {
                 new TypeResponse(5, "Jurídica"));
     }
 
-    private static <T> T invokeMethod(Object o, String methodName) {
-        try {
-            return (T) MethodUtils.invokeMethod(o, methodName);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }
-
-// List<TypeResponse> list = MethodUtils.invokeMethod(this, methodName);
-// List<TypeResponse> list = this.visibility();
