@@ -10,6 +10,8 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jeanbarcellos.core.dto.ValidationRequestBase;
+import com.jeanbarcellos.demo.services.TypeService.Types;
+import com.jeanbarcellos.demo.validation.annotation.TypeCheck;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +37,8 @@ public class PeopleRequest extends ValidationRequestBase {
     public static final String MSG_ERROR_CPF_NOT_NULL_OR_EMPTY = "O campo 'identificationNumber' não deve ser nulo ou estar vazio";
     public static final String MSG_ERROR_CPF_INVALID = "O 'CPF' informado é inválido";
 
+    public static final String MSG_ERROR_VISIBILITY_INVALID = "O campo 'type' possui valor inválido";
+
     @JsonIgnore
     private UUID id;
 
@@ -49,4 +53,7 @@ public class PeopleRequest extends ValidationRequestBase {
     @NotEmpty(message = MSG_ERROR_CPF_NOT_NULL_OR_EMPTY)
     @CPF(message = MSG_ERROR_CPF_INVALID)
     private String identificationNumber;
+
+    @TypeCheck(type = Types.PEOPLE, message = MSG_ERROR_VISIBILITY_INVALID)
+    private Integer type;
 }

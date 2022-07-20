@@ -9,7 +9,9 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jeanbarcellos.core.dto.ValidationRequestBase;
+import com.jeanbarcellos.demo.services.TypeService.Types;
 import com.jeanbarcellos.demo.validation.annotation.CategoryCheck;
+import com.jeanbarcellos.demo.validation.annotation.TypeCheck;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +37,8 @@ public class PostRequest extends ValidationRequestBase {
 
     public static final String MSG_ERROR_AUTHOR_NOT_NULL = "O campo 'author' não deve ser nulo";
 
+    public static final String MSG_ERROR_VISIBILITY_INVALID = "O campo 'visibility' possui valor inválido";
+
     @JsonIgnore
     private UUID id;
 
@@ -51,5 +55,8 @@ public class PostRequest extends ValidationRequestBase {
     @Valid
     @NotNull(message = MSG_ERROR_AUTHOR_NOT_NULL)
     private PeopleRequest author;
+
+    @TypeCheck(type = Types.VISIBILITY, message = MSG_ERROR_VISIBILITY_INVALID)
+    private Integer visibility;
 
 }
