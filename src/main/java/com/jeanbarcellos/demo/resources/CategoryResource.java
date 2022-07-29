@@ -28,7 +28,7 @@ import com.jeanbarcellos.demo.services.CategoryService;
 public class CategoryResource {
 
     @Inject
-    private CategoryService service;
+    protected CategoryService service;
 
     @GET
     public Response list() {

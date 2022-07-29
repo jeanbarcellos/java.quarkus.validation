@@ -14,7 +14,7 @@ import com.jeanbarcellos.demo.repositories.CategoryRepository;
 public class CategoryService {
 
     @Inject
-    private CategoryRepository repository;
+    protected CategoryRepository repository;
 
     public List<CategoryResponse> list() {
         return CategoryResponse.of(this.repository.listAll());

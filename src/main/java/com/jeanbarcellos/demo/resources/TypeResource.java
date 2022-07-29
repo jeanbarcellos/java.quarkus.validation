@@ -23,7 +23,7 @@ import com.jeanbarcellos.demo.services.TypeService;
 public class TypeResource {
 
     @Inject
-    private TypeService service;
+    protected TypeService service;
 
     @GET
     public Response list() {
