@@ -8,8 +8,8 @@ import javax.validation.ConstraintViolation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jeanbarcellos.core.Constants;
-import com.jeanbarcellos.core.Validator;
 import com.jeanbarcellos.core.exception.ValidationException;
+import com.jeanbarcellos.core.validation.Validator;
 
 public abstract class ValidationRequestBase extends RequestBase {
 
