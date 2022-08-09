@@ -2,7 +2,10 @@ package com.jeanbarcellos.core.utils;
 
 import java.util.Arrays;
 import java.util.InputMismatchException;
-import java.util.Random;
+import java.util.List;
+
+import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Utiliário com Documentos do BR
@@ -11,15 +14,22 @@ import java.util.Random;
  */
 public class DocUtils {
 
+    private static final String REGEX_ONLY_NUMBERS = "[\\D]";
     private static final String ZERO = "0";
 
     private static final Integer CPF_LENGHT = 11;
     private static final String CPF_REGEX = "(\\d{3})(\\d{3})(\\d{3})(\\d{2})";
     private static final String CPF_REPLACEMENT = "$1.$2.$3-$4";
+    private static final List<String> CPF_INVALIDOS = Arrays.asList(
+            "00000000000", "11111111111", "22222222222", "33333333333", "44444444444",
+            "55555555555", "66666666666", "77777777777", "88888888888", "99999999999");
 
     private static final Integer CNPJ_LENGHT = 14;
     private static final String CNPJ_REGEX = "(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})";
     private static final String CNPJ_REPLACEMENT = "$1.$2.$3/$4-$5";
+    private static final List<String> CNPJ_INVALIDOS = Arrays.asList(
+            "00000000000000", "11111111111111", "22222222222222", "33333333333333", "44444444444444",
+            "55555555555555", "66666666666666", "77777777777777", "88888888888888", "99999999999999");
 
     private DocUtils() {
 
@@ -60,21 +70,22 @@ public class DocUtils {
     }
 
     public static boolean isCPF(String cpf) {
-        if (StringUtils.isNullOrEmpty(cpf))
+        if (StringUtils.isEmpty(cpf))
             return false;
 
-        cpf = StringUtils.onlyNumbers(cpf);
+        cpf = onlyNumbers(cpf);
 
-        var numerosInvalidos = Arrays.asList("00000000000", "11111111111", "22222222222", "33333333333", "44444444444",
-                "55555555555", "66666666666", "77777777777", "88888888888", "99999999999");
-
-        if (numerosInvalidos.contains(cpf) || (cpf.length() != CPF_LENGHT))
+        if (CPF_INVALIDOS.contains(cpf) || (cpf.length() != CPF_LENGHT))
             return false;
 
-        char dig10, dig11;
-        int sm, i, r, num, peso;
+        char dig10;
+        char dig11;
+        int sm;
+        int i;
+        int r;
+        int num;
+        int peso;
 
-        // "try" - protege o codigo para eventuais erros de conversao de tipo (int)
         try {
             // Calculo do 1o. Digito Verificador
             sm = 0;
@@ -83,45 +94,37 @@ public class DocUtils {
                 // converte o i-esimo caractere do cpf em um numero:
                 // por exemplo, transforma o caractere '0' no inteiro 0
                 // (48 eh a posicao de '0' na tabela ASCII)
-                num = (int) (cpf.charAt(i) - 48);
+                num = (cpf.charAt(i) - 48);
                 sm = sm + (num * peso);
                 peso = peso - 1;
             }
 
             r = 11 - (sm % 11);
-            if ((r == 10) || (r == 11))
-                dig10 = '0';
-            else
-                dig10 = (char) (r + 48); // converte no respectivo caractere numerico
+            dig10 = ((r == 10) || (r == 11)) ? '0' : (char) (r + 48); // converte no respectivo caractere numerico
 
             // Calculo do 2o. Digito Verificador
             sm = 0;
             peso = 11;
             for (i = 0; i < 10; i++) {
-                num = (int) (cpf.charAt(i) - 48);
+                num = (cpf.charAt(i) - 48);
                 sm = sm + (num * peso);
                 peso = peso - 1;
             }
 
             r = 11 - (sm % 11);
-            if ((r == 10) || (r == 11))
-                dig11 = '0';
-            else
-                dig11 = (char) (r + 48);
+
+            dig11 = ((r == 10) || (r == 11)) ? '0' : (char) (r + 48);
 
             // Verifica se os digitos calculados conferem com os digitos informados.
-            if ((dig10 == cpf.charAt(9)) && (dig11 == cpf.charAt(10)))
-                return (true);
-            else
-                return (false);
+            return ((dig10 == cpf.charAt(9)) && (dig11 == cpf.charAt(10)));
         } catch (InputMismatchException erro) {
-            return (false);
+            return false;
         }
     }
 
     public static String formatCPF(String cpf) {
         cpf = StringUtils.leftPad(cpf, CPF_LENGHT, ZERO);
-        return StringUtils.replaceAll(CPF_REGEX, CPF_REPLACEMENT, cpf);
+        return cpf.replaceAll(CPF_REGEX, CPF_REPLACEMENT);
     }
 
     /* ****************************************************************** */
@@ -166,23 +169,22 @@ public class DocUtils {
     }
 
     public static boolean isCNPJ(String cnpj) {
-        if (StringUtils.isNullOrEmpty(cnpj))
+        if (StringUtils.isEmpty(cnpj))
             return false;
 
-        cnpj = StringUtils.onlyNumbers(cnpj);
+        cnpj = onlyNumbers(cnpj);
 
-        var numerosInvalidos = Arrays.asList("00000000000000", "11111111111111", "22222222222222", "33333333333333",
-                "44444444444444", "55555555555555", "66666666666666", "77777777777777", "88888888888888",
-                "99999999999999");
-
-        // considera-se erro cnpj's formados por uma sequencia de numeros iguais
-        if (numerosInvalidos.contains(cnpj) || (cnpj.length() != CNPJ_LENGHT))
+        if (CNPJ_INVALIDOS.contains(cnpj) || (cnpj.length() != CNPJ_LENGHT))
             return false;
 
-        char dig13, dig14;
-        int sm, i, r, num, peso;
+        char dig13;
+        char dig14;
+        int sm;
+        int i;
+        int r;
+        int num;
+        int peso;
 
-        // "try" - protege o código para eventuais erros de conversao de tipo (int)
         try {
             // Calculo do 1o. Digito Verificador
             sm = 0;
@@ -191,7 +193,7 @@ public class DocUtils {
                 // converte o i-ésimo caractere do cnpj em um número:
                 // por exemplo, transforma o caractere '0' no inteiro 0
                 // (48 eh a posição de '0' na tabela ASCII)
-                num = (int) (cnpj.charAt(i) - 48);
+                num = cnpj.charAt(i) - 48;
                 sm = sm + (num * peso);
                 peso = peso + 1;
                 if (peso == 10)
@@ -199,16 +201,13 @@ public class DocUtils {
             }
 
             r = sm % 11;
-            if ((r == 0) || (r == 1))
-                dig13 = '0';
-            else
-                dig13 = (char) ((11 - r) + 48);
+            dig13 = ((r == 0) || (r == 1)) ? '0' : (char) ((11 - r) + 48);
 
             // Calculo do 2o. Digito Verificador
             sm = 0;
             peso = 2;
             for (i = 12; i >= 0; i--) {
-                num = (int) (cnpj.charAt(i) - 48);
+                num = (cnpj.charAt(i) - 48);
                 sm = sm + (num * peso);
                 peso = peso + 1;
                 if (peso == 10)
@@ -216,18 +215,12 @@ public class DocUtils {
             }
 
             r = sm % 11;
-            if ((r == 0) || (r == 1))
-                dig14 = '0';
-            else
-                dig14 = (char) ((11 - r) + 48);
+            dig14 = ((r == 0) || (r == 1)) ? '0' : (char) ((11 - r) + 48);
 
             // Verifica se os dígitos calculados conferem com os dígitos informados.
-            if ((dig13 == cnpj.charAt(12)) && (dig14 == cnpj.charAt(13)))
-                return (true);
-            else
-                return (false);
+            return ((dig13 == cnpj.charAt(12)) && (dig14 == cnpj.charAt(13)));
         } catch (InputMismatchException erro) {
-            return (false);
+            return false;
         }
     }
 
@@ -239,11 +232,11 @@ public class DocUtils {
     /* ****************************************************************** */
 
     public static boolean isCPForCNPJ(String number) {
-        if (StringUtils.isNullOrEmpty(number)) {
+        if (StringUtils.isEmpty(number)) {
             return false;
         }
 
-        number = StringUtils.onlyNumbers(number);
+        number = onlyNumbers(number);
 
         return isCPF(StringUtils.leftPad(number, CPF_LENGHT, ZERO))
                 || isCNPJ(StringUtils.leftPad(number, CNPJ_LENGHT, ZERO));
@@ -256,11 +249,15 @@ public class DocUtils {
     /* ****************************************************************** */
 
     private static int random(int n) {
-        return new Random().nextInt(n);
+        return RandomUtils.nextInt(0, n);
     }
 
     private static int mod(int dividendo, int divisor) {
-        return (int) Math.round(dividendo - (Math.floor(dividendo / divisor) * divisor));
+        return (int) Math.round(dividendo - (Math.floor((double) dividendo / divisor) * divisor));
+    }
+
+    private static String onlyNumbers(String string) {
+        return string.replaceAll(REGEX_ONLY_NUMBERS, StringUtils.EMPTY);
     }
 
 }
