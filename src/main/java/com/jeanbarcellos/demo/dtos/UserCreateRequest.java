@@ -21,8 +21,8 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Builder
 @FieldMatch.List({
-    @FieldMatch(first = "password", second = "confirmPassword", message = UserCreateRequest.MSG_ERROR_PASSWORD_NOT_EQUALS),
-    @FieldMatch(first = "email", second = "confirmEmail", message = UserCreateRequest.MSG_ERROR_EMAIL_NOT_EQUALS)
+        @FieldMatch(first = "password", second = "confirmPassword", message = UserCreateRequest.MSG_ERROR_PASSWORD_NOT_EQUALS),
+        @FieldMatch(first = "email", second = "confirmEmail", message = UserCreateRequest.MSG_ERROR_EMAIL_NOT_EQUALS)
 })
 public class UserCreateRequest extends ValidationRequestBase {
 

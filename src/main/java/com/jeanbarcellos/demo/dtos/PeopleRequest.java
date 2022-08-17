@@ -43,6 +43,7 @@ public class PeopleRequest extends ValidationRequestBase {
     @CPF(message = "{PeopleRequest.cpf.invalid}")
     private String identificationNumber;
 
-    @TypeCheck(type = Types.PEOPLE, message = "{PeopleRequest.visibility.invalid}")
+    @TypeCheck(type = Types.PEOPLE, message = "{PeopleRequest.type.invalid}")
     private Integer type;
+
 }
