@@ -12,15 +12,17 @@ import org.hibernate.validator.resourceloading.AggregateResourceBundleLocator;
 public class MessageInterpolatorImpl
         implements javax.validation.MessageInterpolator {
 
-    ResourceBundleMessageInterpolator interpolator;
+    private String[] bundleNames = {
+            "messages", "ValidationMessages"
+    };
+
+    private boolean cachingEnabled = false;
+
+    private ResourceBundleMessageInterpolator interpolator;
 
     public MessageInterpolatorImpl() {
-        var bundleNames = Arrays.asList("messages", "ValidationMessages");
-        boolean cachingEnabled = false;
-
         this.interpolator = new ResourceBundleMessageInterpolator(
-                new AggregateResourceBundleLocator(bundleNames),
-                cachingEnabled);
+                new AggregateResourceBundleLocator(Arrays.asList(this.bundleNames)), this.cachingEnabled);
     }
 
     @Override
