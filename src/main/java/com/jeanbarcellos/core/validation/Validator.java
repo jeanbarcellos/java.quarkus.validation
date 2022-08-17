@@ -3,11 +3,11 @@ package com.jeanbarcellos.core.validation;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.enterprise.inject.spi.CDI;
 import javax.validation.ConstraintViolation;
 
 import com.jeanbarcellos.core.Constants;
 import com.jeanbarcellos.core.exception.ValidationException;
+import com.jeanbarcellos.core.utils.ContainerUtils;
 
 public class Validator {
 
@@ -29,7 +29,7 @@ public class Validator {
     }
 
     private static javax.validation.Validator getInstanceHibernateValidator() {
-        return CDI.current().select(javax.validation.Validator.class).get();
+        return ContainerUtils.get(javax.validation.Validator.class);
     }
 
 }

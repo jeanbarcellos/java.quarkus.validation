@@ -7,7 +7,10 @@ import io.quarkus.runtime.Startup;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Starter para o Validator funcionar estaticamente
+ * Starter para o Validator para injetar o Validator na inicialização do App
+ *
+ * É necessário o starter para deixar a instância disponível para validação
+ * rápida
  */
 @Slf4j
 @Startup
@@ -17,7 +20,8 @@ public class ValidatorBootstrap {
     Validator validator;
 
     ValidatorBootstrap(Validator validator) {
-        log.info(validator.toString());
+        log.info(ValidatorBootstrap.class.getName());
+        log.info("Inject instance: " + validator.toString());
         this.validator = validator;
     }
 }
