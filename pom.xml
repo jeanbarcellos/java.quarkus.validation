@@ -178,17 +178,4 @@
     </profile>
   </profiles>
 
-  <distributionManagement>
-    <repository>
-      <id>cresol.archiva.internal</id>
-      <name>Internal Release Repository</name>
-      <url>http://archiva.cresolconfederacao.com.br:9015/repository/internal/</url>
-    </repository>
-    <snapshotRepository>
-      <id>cresol.archiva.snapshots</id>
-      <name>Internal Snapshot Repository</name>
-      <url>http://archiva.cresolconfederacao.com.br:9015/repository/snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
-
 </project>
